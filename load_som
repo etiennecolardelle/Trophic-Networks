@@ -9,7 +9,7 @@ int loadSpecies(TrophicNetwork *network, const char *filename) {
         perror("Erreur d'ouverture du fichier nodes.csv");
         return -1;
     }
-
+df
     char line[256];
     int index = 0;
 
