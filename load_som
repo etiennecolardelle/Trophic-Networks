@@ -1,0 +1,36 @@
+// Fonction pour charger les espèces depuis un fichier nodes.csv
+int loadSpecies(TrophicNetwork *network, const char *filename) {
+    char filepath[100];
+    strcpy(filepath, filename);
+    strcat(filepath, "/nodes.csv");
+
+    FILE *file = fopen(filepath, "r");
+    if (!file) {
+        perror("Erreur d'ouverture du fichier nodes.csv");
+        return -1;
+    }
+
+    char line[256];
+    int index = 0;
+
+    // Lecture de l'entête
+    fgets(line, sizeof(line), file);
+
+    // Lecture des lignes
+    while (fgets(line, sizeof(line), file)) {
+        Species *s = &network->species[index];
+        sscanf(line, "%9[^,],%49[^,],%49[^,],%d,%d,%lf,%d",
+               s->id,
+               s->name,
+               s->type,
+               &s->trophicLevel,
+               &s->population,
+               &s->growthRate,
+               &s->carryingCapacity);
+        index++;
+    }
+
+    network->numSpecies = index;
+    fclose(file);
+    return 0;
+}
